@@ -12,15 +12,14 @@ public class User {
     private String password;
     private Role role;
 
-
-    private List<Habit> habitList;
+    public User() {
+    }
 
     public User(String name, String email, String password, Role role) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
-        habitList = new ArrayList<>();
     }
 
     public int getId() {
@@ -55,13 +54,6 @@ public class User {
         this.password = password;
     }
 
-    public Iterator<Habit> getHabitList() {
-        return habitList.iterator();
-    }
-
-    public void addHabit(Habit habit) {
-        habitList.add(habit);
-    }
 
     public Role getRole() {
         return role;

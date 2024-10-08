@@ -4,7 +4,6 @@ import io.ylab.model.User;
 import io.ylab.repository.UserRepository;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class UserRepositoryImpl implements UserRepository {
@@ -35,7 +34,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Iterator<User> findAll() {
+    public List<User> findAll() {
         return users.iterator();
     }
 

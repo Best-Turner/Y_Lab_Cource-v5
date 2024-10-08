@@ -1,6 +1,7 @@
 package io.ylab.repository;
 
 import java.util.Iterator;
+import java.util.List;
 
 public interface Repository<T, K> {
 
@@ -8,7 +9,7 @@ public interface Repository<T, K> {
 
     T findById(K id);
 
-    Iterator<T> findAll();
+    List<T> findAll();
 
     boolean deleteById(K id);
 }

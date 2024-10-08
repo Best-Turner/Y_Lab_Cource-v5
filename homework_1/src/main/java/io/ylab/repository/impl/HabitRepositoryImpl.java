@@ -4,7 +4,6 @@ import io.ylab.model.Habit;
 import io.ylab.repository.HabitRepository;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class HabitRepositoryImpl implements HabitRepository {
@@ -36,7 +35,7 @@ public class HabitRepositoryImpl implements HabitRepository {
     }
 
     @Override
-    public Iterator<Habit> findAll() {
+    public List<Habit> findAll() {
         return habitList.iterator();
     }
 

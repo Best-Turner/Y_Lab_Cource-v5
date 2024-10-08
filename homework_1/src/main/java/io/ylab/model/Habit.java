@@ -11,6 +11,9 @@ public class Habit {
     private Date creationDate;
     private StatusHabit status;
 
+    public Habit() {
+    }
+
     public Habit(int id, int idOwner, String title, String description, Date creationDate, StatusHabit status) {
         this.id = id;
         this.idOwner = idOwner;
