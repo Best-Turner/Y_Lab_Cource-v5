@@ -3,7 +3,6 @@ package io.ylab.service;
 import io.ylab.exception.UserNotFoundException;
 import io.ylab.exeption.DuplicateEmailException;
 import io.ylab.exeption.DuplicatePasswordException;
-import io.ylab.model.Habit;
 import io.ylab.model.User;
 
 import java.util.Iterator;

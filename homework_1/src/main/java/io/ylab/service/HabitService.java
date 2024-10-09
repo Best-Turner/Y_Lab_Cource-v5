@@ -3,7 +3,6 @@ package io.ylab.service;
 import io.ylab.model.Habit;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
 
 public interface HabitService {

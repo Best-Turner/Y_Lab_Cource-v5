@@ -1,7 +1,6 @@
 package io.ylab.model;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Habit {
 
