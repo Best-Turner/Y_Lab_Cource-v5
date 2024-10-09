@@ -35,7 +35,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return users.iterator();
+        return users;
     }
 
     @Override

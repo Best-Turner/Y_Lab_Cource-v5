@@ -1,5 +1,6 @@
 package io.ylab.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Habit {
@@ -8,13 +9,13 @@ public class Habit {
     private int idOwner;
     private String title;
     private String description;
-    private Date creationDate;
+    private LocalDate creationDate;
     private StatusHabit status;
 
     public Habit() {
     }
 
-    public Habit(int id, int idOwner, String title, String description, Date creationDate, StatusHabit status) {
+    public Habit(int id, int idOwner, String title, String description, LocalDate creationDate, StatusHabit status) {
         this.id = id;
         this.idOwner = idOwner;
         this.title = title;
@@ -47,11 +48,11 @@ public class Habit {
         this.description = description;
     }
 
-    public Date getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
 

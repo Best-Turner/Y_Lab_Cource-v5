@@ -36,7 +36,7 @@ public class HabitRepositoryImpl implements HabitRepository {
 
     @Override
     public List<Habit> findAll() {
-        return habitList.iterator();
+        return habitList;
     }
 
     @Override
