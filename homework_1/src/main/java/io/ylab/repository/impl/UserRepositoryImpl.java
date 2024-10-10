@@ -11,7 +11,7 @@ public class UserRepositoryImpl implements UserRepository {
     public static UserRepositoryImpl instance;
     private final List<User> users;
 
-    private UserRepositoryImpl() {
+    public UserRepositoryImpl() {
         users = new ArrayList<>();
     }
 
