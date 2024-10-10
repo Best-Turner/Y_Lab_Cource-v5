@@ -1,25 +1,37 @@
 package io.ylab;
 
-import io.ylab.app.menu.CommandMenu;
-import io.ylab.app.menu.CompositeMenu;
+import io.ylab.app.HabitManagerApp;
+import io.ylab.app.command.Command;
+import io.ylab.app.command.impl.SaveUserCommand;
 import io.ylab.app.menu.MenuComponent;
+import io.ylab.app.menu.impl.CommandMenu;
+import io.ylab.app.menu.impl.CompositeMenu;
+import io.ylab.repository.UserRepository;
+import io.ylab.repository.impl.UserRepositoryImpl;
+import io.ylab.service.UserService;
+import io.ylab.service.impl.UserServiceImpl;
 
 public class Main {
     public static void main(String[] args) {
 
-        MenuComponent mainMenu = new CompositeMenu("Гланое меню");
+        UserRepository userRepository = new UserRepositoryImpl();
+        UserService userService = new UserServiceImpl(userRepository);
+        Command registerCommand = new SaveUserCommand(userService);
 
-        MenuComponent composite1 = new CompositeMenu("Composite 1");
-        MenuComponent composite2 = new CompositeMenu("Composite 2");
+        MenuComponent mainMenu = new CompositeMenu("Главное меню");
 
-        composite1.addMenu(new CommandMenu("Command menu 1_1"));
-        composite1.addMenu(new CommandMenu("Command menu 1_2"));
-        composite1.setParent(mainMenu);
-        composite2.setParent(mainMenu);
+        MenuComponent registrationMenu = new CommandMenu("Регистрация пользователя");
+        registrationMenu.setParent(mainMenu);
+        MenuComponent singInMenu = new CommandMenu("Войти");
+        singInMenu.setParent(mainMenu);
 
-        mainMenu.addMenu(composite1);
-        mainMenu.addMenu(composite2);
+        registrationMenu.setCommand(registerCommand);
 
-        mainMenu.execute();
+        mainMenu.addMenu(registrationMenu);
+        mainMenu.addMenu(singInMenu);
+
+        HabitManagerApp app = new HabitManagerApp(mainMenu, registerCommand);
+        app.run(mainMenu);
+
     }
 }
