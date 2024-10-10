@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(User user) throws DuplicateEmailException, DuplicatePasswordException {
         checkUserData(user.getEmail(), user.getPassword());
-        int userId = getRandomId(user.getEmail());
+        int userId = getRandomId();
         user.setId(userId);
         if (Objects.isNull(user.getName())) {
             user.setName("<user - " + userId + ">");
@@ -91,8 +91,9 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-    private int getRandomId(String line) {
-        return Integer.valueOf(UUID.fromString(line).toString().substring(0, 5));
+    private int getRandomId() {
+        Random random = new Random();
+        return random.nextInt(100);
     }
 
     public User existUser(int id) throws UserNotFoundException {
