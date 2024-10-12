@@ -3,23 +3,27 @@ package io.ylab.service.impl;
 import io.ylab.exception.UserNotFoundException;
 import io.ylab.exeption.DuplicateEmailException;
 import io.ylab.exeption.DuplicatePasswordException;
+import io.ylab.model.Habit;
 import io.ylab.model.User;
+import io.ylab.repository.HabitRepository;
 import io.ylab.repository.UserRepository;
+import io.ylab.service.HabitService;
 import io.ylab.service.UserService;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class UserServiceImpl implements UserService {
 
     private static Set<String> cacheUserEmails;
     private static Set<String> cacheUserPassword;
     private final UserRepository repository;
-    //private final HabitRepository habitRepository;
+    private final HabitService habitService;
 
 
-    public UserServiceImpl(UserRepository repository) {
+    public UserServiceImpl(UserRepository repository, HabitService habitService) {
         this.repository = repository;
-        //this.habitRepository = habitRepository;
+        this.habitService = habitService;
         cacheUserEmails = new HashSet<>();
         cacheUserPassword = new HashSet<>();
     }
@@ -43,8 +47,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean deleteById(int id) {
+    public Optional<User> findByEmail(String email)  {
+        return repository
+                .findAll()
+                .stream()
+                .filter(user -> user.getEmail()
+                        .equals(email))
+                .findFirst();
+    }
 
+    @Override
+    public boolean deleteById(int id) {
+        while (getHabits(id).hasNext()) {
+            habitService.deleteById(getHabits(id).next().getId());
+        }
+        User userBeDeleted = repository.findById(id);
+        cacheUserPassword.remove(userBeDeleted.getPassword());
+        cacheUserEmails.remove(userBeDeleted.getEmail());
         return repository.deleteById(id);
     }
 
@@ -76,13 +95,10 @@ public class UserServiceImpl implements UserService {
         return fromDb;
     }
 
-//    @Override
-//    public Iterator<Habit> getHabits(int userId) {
-//        return habitRepository.findAll()
-//                .stream()
-//                .filter(habit -> habit.getIdOwner() == userId)
-//                .collect(Collectors.toList()).iterator();
-//    }
+    @Override
+    public Iterator<Habit> getHabits(int userId) {
+        return habitService.getHabitsByUserId(userId);
+    }
 
     @Override
     public boolean changeRole(int userid, User.Role role) throws UserNotFoundException {
@@ -106,6 +122,7 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateEmailException("Данный email уже зарегистрирован");
         }
     }
+
 
     private void checkUserData(String email, String password) throws DuplicatePasswordException, DuplicateEmailException {
         checkIsUniqueEmail(email);

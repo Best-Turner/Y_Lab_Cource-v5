@@ -1,4 +1,4 @@
-package io.ylab.app.command.impl;
+package io.ylab.app.command.impl.userCommand;
 
 import io.ylab.app.command.Command;
 import io.ylab.exeption.DuplicateEmailException;

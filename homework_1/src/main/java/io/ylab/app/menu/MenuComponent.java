@@ -31,4 +31,7 @@ public abstract class MenuComponent {
     public MenuComponent getParent() {
         return parent;
     }
+    public void clean(){
+        throw new UnsupportedOperationException();
+    }
 }

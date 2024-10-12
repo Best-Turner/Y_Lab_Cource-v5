@@ -1,5 +1,6 @@
 package io.ylab.service.impl;
 
+import io.ylab.exception.AccessException;
 import io.ylab.model.Habit;
 import io.ylab.repository.HabitRepository;
 import io.ylab.service.HabitService;
@@ -44,8 +45,11 @@ public class HabitServiceImpl implements HabitService {
     }
 
     @Override
-    public Habit update(int id, Habit updatedHabit) {
+    public Habit update(int id, Habit updatedHabit, int currentUserId) throws AccessException {
         Habit habitById = repository.findById(id);
+        if (habitById.getIdOwner() != currentUserId) {
+            throw new AccessException("У вас нет привычки с ID = " + id);
+        }
         habitById.setTitle(updatedHabit.getTitle());
         habitById.setDescription(updatedHabit.getDescription());
         return repository.findById(id);

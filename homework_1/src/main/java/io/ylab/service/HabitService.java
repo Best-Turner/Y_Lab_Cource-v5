@@ -1,5 +1,6 @@
 package io.ylab.service;
 
+import io.ylab.exception.AccessException;
 import io.ylab.model.Habit;
 
 import java.util.Iterator;
@@ -13,7 +14,7 @@ public interface HabitService {
 
     Iterator<Habit> getHabitsByUserId(int userId);
 
-    Habit update(int id, Habit updatedHabit);
+    Habit update(int id, Habit updatedHabit, int currentUserId) throws AccessException;
 
     boolean deleteById(int id);
 

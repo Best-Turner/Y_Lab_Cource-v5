@@ -4,12 +4,13 @@ import io.ylab.app.command.Command;
 import io.ylab.app.menu.MenuComponent;
 
 public class CommandMenu extends MenuComponent {
-    private Command command;
+    private final Command command;
     private String title;
 
     private MenuComponent parent;
 
-    public CommandMenu(String title) {
+    public CommandMenu(String title, Command command) {
+        this.command = command;
         this.title = title;
     }
 
@@ -28,10 +29,6 @@ public class CommandMenu extends MenuComponent {
         return title;
     }
 
-    @Override
-    public void setCommand(Command command) {
-        this.command = command;
-    }
 
     @Override
     public MenuComponent getParent() {

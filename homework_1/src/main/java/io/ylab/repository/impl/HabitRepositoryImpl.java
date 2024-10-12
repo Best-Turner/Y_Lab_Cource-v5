@@ -16,7 +16,7 @@ public class HabitRepositoryImpl implements HabitRepository {
         habitList = new ArrayList<>();
     }
 
-    public HabitRepositoryImpl getInstance() {
+    public static HabitRepositoryImpl getInstance() {
         if (instance == null) {
             instance = new HabitRepositoryImpl();
         }

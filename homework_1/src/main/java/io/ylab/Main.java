@@ -1,37 +1,27 @@
 package io.ylab;
 
 import io.ylab.app.HabitManagerApp;
-import io.ylab.app.command.Command;
-import io.ylab.app.command.impl.SaveUserCommand;
-import io.ylab.app.menu.MenuComponent;
-import io.ylab.app.menu.impl.CommandMenu;
-import io.ylab.app.menu.impl.CompositeMenu;
+import io.ylab.repository.HabitRepository;
 import io.ylab.repository.UserRepository;
+import io.ylab.repository.impl.HabitRepositoryImpl;
 import io.ylab.repository.impl.UserRepositoryImpl;
+import io.ylab.service.AutenticationService;
+import io.ylab.service.HabitService;
 import io.ylab.service.UserService;
+import io.ylab.service.impl.HabitServiceImpl;
 import io.ylab.service.impl.UserServiceImpl;
 
 public class Main {
     public static void main(String[] args) {
+        HabitRepository habitRepository = HabitRepositoryImpl.getInstance();
+        HabitService habitService = new HabitServiceImpl(habitRepository);
+        UserRepository userRepository = UserRepositoryImpl.getInstance();
 
-        UserRepository userRepository = new UserRepositoryImpl();
-        UserService userService = new UserServiceImpl(userRepository);
-        Command registerCommand = new SaveUserCommand(userService);
+        UserService service = new UserServiceImpl(userRepository, habitService);
 
-        MenuComponent mainMenu = new CompositeMenu("Главное меню");
-
-        MenuComponent registrationMenu = new CommandMenu("Регистрация пользователя");
-        registrationMenu.setParent(mainMenu);
-        MenuComponent singInMenu = new CommandMenu("Войти");
-        singInMenu.setParent(mainMenu);
-
-        registrationMenu.setCommand(registerCommand);
-
-        mainMenu.addMenu(registrationMenu);
-        mainMenu.addMenu(singInMenu);
-
-        HabitManagerApp app = new HabitManagerApp(mainMenu, registerCommand);
-        app.run(mainMenu);
+        AutenticationService authenticationService = new AutenticationService(service);
+        HabitManagerApp app = new HabitManagerApp(authenticationService, service, habitService);
+        app.run();
 
     }
 }

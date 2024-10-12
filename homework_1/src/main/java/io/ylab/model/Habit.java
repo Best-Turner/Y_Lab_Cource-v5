@@ -67,6 +67,15 @@ public class Habit {
         return idOwner;
     }
 
+    @Override
+    public String toString() {
+        return "ID: " + id
+               + "\nЗаголовок: " + title
+               + "\nОписание: " + description
+               + "\nСтатус: " + status
+               + "\nДата создания: " + creationDate;
+    }
+
     public enum StatusHabit {
         NEW,
         COMPLETED,

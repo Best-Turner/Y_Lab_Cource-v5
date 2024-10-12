@@ -12,7 +12,6 @@ public class CompositeMenu extends MenuComponent {
     private List<MenuComponent> menuList;
     private String title;
     private MenuComponent parent;
-    private Scanner scanner;
 
     private final static String WRONG_COMMAND = """
             -------------------------\nКоманда не поддерживается\n-------------------------
@@ -35,7 +34,6 @@ public class CompositeMenu extends MenuComponent {
         for (MenuComponent menu : menuList) {
             System.out.println(count++ + " - " + menu.getTitle());
         }
-        System.out.println(count + " - " + "Назад");
     }
 
     @Override
@@ -55,10 +53,10 @@ public class CompositeMenu extends MenuComponent {
 
     @Override
     public MenuComponent getChild(int index) throws CommandUnSupportedException {
-        if (index < 0 || index >= menuList.size()) {
+        if (index < 0 || index > menuList.size()) {
             throw new CommandUnSupportedException(WRONG_COMMAND);
         }
-        return menuList.get(index);
+        return menuList.get(index -1);
     }
 
     @Override
@@ -69,5 +67,10 @@ public class CompositeMenu extends MenuComponent {
     @Override
     public MenuComponent getParent() {
         return parent;
+    }
+
+    @Override
+    public void clean() {
+        menuList = new ArrayList<>();
     }
 }

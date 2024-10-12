@@ -59,6 +59,16 @@ public class User {
         this.role = role;
     }
 
+    @Override
+    public String toString() {
+        return "\n-----------------------------\nID: " + id
+               + "\nИмя пользователя: " + name
+               + "\nЛогин: " + email
+               + "\nПароль: " + password
+               + "\nСтатус: " + (role.name().equals(Role.USER.toString()) ? "Пользователь" : "Администратор")
+                +"\n-----------------------------\n";
+    }
+
     public enum Role {
         ADMIN,
         USER

@@ -8,17 +8,19 @@ import java.util.List;
 
 public class UserRepositoryImpl implements UserRepository {
 
-    public static UserRepositoryImpl instance;
+    private static UserRepositoryImpl instance;
     private final List<User> users;
 
-    public UserRepositoryImpl() {
+    private UserRepositoryImpl() {
         users = new ArrayList<>();
+        addDefaultUser();
     }
 
-    public UserRepositoryImpl getInstance() {
+    public static UserRepositoryImpl getInstance() {
         if (instance == null) {
             instance = new UserRepositoryImpl();
         }
+
         return instance;
     }
 
@@ -30,7 +32,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User findById(Integer id) {
-        return users.get(id);
+        return users.stream().filter(user -> user.getId() == id).findFirst().get();
     }
 
     @Override
@@ -41,5 +43,14 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean deleteById(Integer id) {
         return users.removeIf(user -> user.getId() == id);
+    }
+
+    private void addDefaultUser() {
+        User admin = new User("a", "a", "a", User.Role.ADMIN);
+        admin.setId(1);
+        User user = new User("u", "u", "u", User.Role.USER);
+        user.setId(2);
+        users.add(admin);
+        users.add(user);
     }
 }
