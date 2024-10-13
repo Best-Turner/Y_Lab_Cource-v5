@@ -2,7 +2,7 @@ package io.ylab.app.menu.impl;
 
 
 import io.ylab.app.menu.MenuComponent;
-import io.ylab.exeption.CommandUnSupportedException;
+import io.ylab.exception.CommandUnSupportedException;
 
 import java.util.ArrayList;
 import java.util.List;

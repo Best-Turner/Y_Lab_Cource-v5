@@ -1,4 +1,4 @@
-package io.ylab.exeption;
+package io.ylab.exception;
 
 public class DuplicateEmailException extends Exception {
     public DuplicateEmailException(String message) {

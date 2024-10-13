@@ -1,8 +1,6 @@
 package io.ylab.service;
 
-import io.ylab.exception.UserNotFoundException;
-import io.ylab.exeption.DuplicateEmailException;
-import io.ylab.exeption.DuplicatePasswordException;
+import io.ylab.exception.*;
 import io.ylab.model.Habit;
 import io.ylab.model.User;
 
@@ -21,7 +19,7 @@ public interface UserService {
 
     User update(int id, User user) throws DuplicatePasswordException, DuplicateEmailException;
 
-//    Iterator<Habit> getHabits(int userId);
+    void deleteHabitById(int userId, int habitId) throws UserNotFoundException, HabitNotFoundException, AccessException;
 
     Iterator<Habit> getHabits(int userId);
 

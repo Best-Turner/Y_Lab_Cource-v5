@@ -1,15 +1,12 @@
 package io.ylab.app;
 
 import io.ylab.app.command.impl.ProgramCloseCommand;
-import io.ylab.app.command.impl.habitCommand.AddHabitCommand;
-import io.ylab.app.command.impl.habitCommand.ChangeStatusHabitCommand;
-import io.ylab.app.command.impl.habitCommand.ShowAllMyHabitCommand;
-import io.ylab.app.command.impl.habitCommand.UpdateHabitCommand;
+import io.ylab.app.command.impl.habitCommand.*;
 import io.ylab.app.command.impl.userCommand.*;
 import io.ylab.app.menu.MenuComponent;
 import io.ylab.app.menu.impl.CommandMenu;
 import io.ylab.app.menu.impl.CompositeMenu;
-import io.ylab.exeption.CommandUnSupportedException;
+import io.ylab.exception.CommandUnSupportedException;
 import io.ylab.service.AutenticationService;
 import io.ylab.service.HabitService;
 import io.ylab.service.UserService;
@@ -111,6 +108,7 @@ public class HabitManagerApp {
         menuHabit.addMenu(new CommandMenu("Создать новую привычку", new AddHabitCommand(authentication, habitService)));
         menuHabit.addMenu(new CommandMenu("Редактировать привычку", new UpdateHabitCommand(authentication, habitService)));
         menuHabit.addMenu(new CommandMenu("Изменить статус привычки", new ChangeStatusHabitCommand(authentication, habitService)));
+        menuHabit.addMenu(new CommandMenu("Удалить привычку", new DeleteHabitCommand(authentication, userService)));
 
         MenuComponent menuExit = new CommandMenu("Выйти из учетной записи", new LogOutCommand(authentication));
 

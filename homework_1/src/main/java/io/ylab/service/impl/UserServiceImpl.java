@@ -1,17 +1,13 @@
 package io.ylab.service.impl;
 
-import io.ylab.exception.UserNotFoundException;
-import io.ylab.exeption.DuplicateEmailException;
-import io.ylab.exeption.DuplicatePasswordException;
+import io.ylab.exception.*;
 import io.ylab.model.Habit;
 import io.ylab.model.User;
-import io.ylab.repository.HabitRepository;
 import io.ylab.repository.UserRepository;
 import io.ylab.service.HabitService;
 import io.ylab.service.UserService;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class UserServiceImpl implements UserService {
 
@@ -47,7 +43,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByEmail(String email)  {
+    public Optional<User> findByEmail(String email) {
         return repository
                 .findAll()
                 .stream()
@@ -93,6 +89,24 @@ public class UserServiceImpl implements UserService {
         fromDb.setEmail(newEmail);
         fromDb.setPassword(newPassword);
         return fromDb;
+    }
+
+    @Override
+    public void deleteHabitById(int userId, int habitId) throws UserNotFoundException, HabitNotFoundException, AccessException {
+        Habit habitById = habitService.getHabitById(habitId)
+                .orElseThrow(() -> new HabitNotFoundException("Привычка не найдена"));
+        User userById = findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
+
+        if (userById.getRole().equals(User.Role.ADMIN)) {
+            habitService.deleteById(habitId);
+        } else {
+            if (habitById.getIdOwner() == userId) {
+                habitService.deleteById(habitId);
+            } else {
+                throw new AccessException("У вас нет привычки с ID = " + habitById);
+            }
+        }
     }
 
     @Override

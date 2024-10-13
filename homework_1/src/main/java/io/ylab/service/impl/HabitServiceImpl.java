@@ -6,10 +6,7 @@ import io.ylab.repository.HabitRepository;
 import io.ylab.service.HabitService;
 
 import java.time.LocalDate;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class HabitServiceImpl implements HabitService {
@@ -22,7 +19,7 @@ public class HabitServiceImpl implements HabitService {
 
     @Override
     public Habit save(Habit habit) {
-        int id = Integer.valueOf(UUID.randomUUID().toString().substring(0, 5));
+        int id = getRandomId();
         LocalDate creationDate = LocalDate.now();
         habit.setId(id);
         habit.setCreationDate(creationDate);
@@ -31,7 +28,7 @@ public class HabitServiceImpl implements HabitService {
     }
 
     @Override
-    public Optional<Habit> getById(int id) {
+    public Optional<Habit> getHabitById(int id) {
         return Optional.of(repository.findById(id));
     }
 
@@ -65,5 +62,10 @@ public class HabitServiceImpl implements HabitService {
         Habit habitById = repository.findById(habitId);
         habitById.setStatus(statusHabit);
         return repository.findById(habitId);
+    }
+
+    private int getRandomId() {
+        Random random = new Random();
+        return random.nextInt(100);
     }
 }

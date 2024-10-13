@@ -1,7 +1,7 @@
 package io.ylab.app.menu;
 
 import io.ylab.app.command.Command;
-import io.ylab.exeption.CommandUnSupportedException;
+import io.ylab.exception.CommandUnSupportedException;
 
 public abstract class MenuComponent {
 

@@ -24,7 +24,7 @@ public class ChangeStatusHabitCommand implements Command {
     @Override
     public void execute() {
         int habitIdToUpdate = getHabitIdToUpdate();
-        Optional<Habit> habitById = habitService.getById(habitIdToUpdate);
+        Optional<Habit> habitById = habitService.getHabitById(habitIdToUpdate);
         if (habitById.isPresent() && habitById.get().getIdOwner() == autenticationService.getCurrentUser().getId()) {
             Habit.StatusHabit newStatus = Habit.StatusHabit.valueOf(getNewHabitStatus());
             Habit habit = habitService.changeStatus(habitIdToUpdate, newStatus);

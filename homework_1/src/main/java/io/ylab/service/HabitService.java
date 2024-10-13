@@ -10,7 +10,7 @@ public interface HabitService {
 
     Habit save(Habit habit);
 
-    Optional<Habit> getById(int id);
+    Optional<Habit> getHabitById(int id);
 
     Iterator<Habit> getHabitsByUserId(int userId);
 

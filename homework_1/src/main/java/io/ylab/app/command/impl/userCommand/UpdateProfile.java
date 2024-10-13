@@ -2,8 +2,8 @@ package io.ylab.app.command.impl.userCommand;
 
 import io.ylab.app.command.Command;
 import io.ylab.exception.UserNotFoundException;
-import io.ylab.exeption.DuplicateEmailException;
-import io.ylab.exeption.DuplicatePasswordException;
+import io.ylab.exception.DuplicateEmailException;
+import io.ylab.exception.DuplicatePasswordException;
 import io.ylab.model.User;
 import io.ylab.service.AutenticationService;
 import io.ylab.service.UserService;
