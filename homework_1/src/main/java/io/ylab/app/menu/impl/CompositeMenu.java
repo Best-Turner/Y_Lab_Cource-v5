@@ -6,7 +6,6 @@ import io.ylab.exeption.CommandUnSupportedException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class CompositeMenu extends MenuComponent {
     private List<MenuComponent> menuList;
@@ -53,10 +52,10 @@ public class CompositeMenu extends MenuComponent {
 
     @Override
     public MenuComponent getChild(int index) throws CommandUnSupportedException {
-        if (index < 0 || index > menuList.size()) {
+        if (index <= 0 || index > menuList.size()) {
             throw new CommandUnSupportedException(WRONG_COMMAND);
         }
-        return menuList.get(index -1);
+        return menuList.get(index - 1);
     }
 
     @Override
