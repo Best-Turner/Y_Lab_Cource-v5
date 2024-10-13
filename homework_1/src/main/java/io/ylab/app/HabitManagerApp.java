@@ -36,26 +36,23 @@ public class HabitManagerApp {
 
     }
 
-
     public void run() {
-        setInitialMenu();
+        int command;
         while (true) {
-            if (!authentication.isAuthentication()) {
-                currentMenu = menuForUserWithoutAuthentication();
-            }
+            displayMenuDependingOnAuthentication();
             currentMenu.execute();
-            if (!menuStack.empty()) {
-                System.out.println(0 + " - Назад");
-            }
-            System.out.println("\nВВЕДИТЕ КОМАНДУ:\n");
-            int i = scanner.nextInt();
-            if (i == 0) {
-                //currentMenu = menuStack.pop();
+            shouldAddBackBatton();
+            try {
+                command = readNumericCommand();
+            } catch (NumberFormatException e) {
+                System.out.println("Вы введи не числовое значение. Повторите попытку");
                 continue;
             }
-
+            if (isBack(command)) {
+                continue;
+            }
             try {
-                MenuComponent child = currentMenu.getChild(i);
+                MenuComponent child = currentMenu.getChild(command);
                 if (child instanceof CompositeMenu) {
                     menuStack.push(currentMenu);
                     currentMenu = child;
@@ -65,23 +62,43 @@ public class HabitManagerApp {
             } catch (CommandUnSupportedException e) {
                 System.out.println(e.getMessage());
             }
-            if (authentication.getCurrentUser() != null && currentMenu == menuForUserWithoutAuthentication()) {
-                currentMenu = menuForUserWithAuthentication();
-            }
         }
     }
 
-    private void setInitialMenu() {
+    private void displayMenuDependingOnAuthentication() {
         if (!authentication.isAuthentication()) {
             currentMenu = menuForUserWithoutAuthentication();
-        } else {
+            menuStack.clear();
+        } else if (authentication.isAuthentication() && menuStack.empty()) {
             currentMenu = menuForUserWithAuthentication();
         }
     }
 
+    private void shouldAddBackBatton() {
+        if (!menuStack.empty()) {
+            System.out.println(0 + " - " + "Назад");
+        }
+    }
+
+    private int readNumericCommand() throws NumberFormatException {
+        System.out.println("\nВВЕДИТЕ КОМАНДУ:\n");
+
+        int command = -1;
+        String inputCommand = scanner.nextLine();
+        command = Integer.parseInt(inputCommand);
+        return command;
+    }
+
+    private boolean isBack(int command) {
+        if (command == 0 && !menuStack.empty()) {
+            currentMenu = menuStack.pop();
+            return true;
+        }
+        return false;
+    }
 
     private MenuComponent menuForUserWithAuthentication() {
-        System.out.println("Пользователь " + authentication.getCurrentUser().getName());
+        System.out.println("\n\t\t\tПользователь " + authentication.getCurrentUser().getName());
         mainMenu.clean();
 
         MenuComponent menuProfile = new CompositeMenu("Профиль");
@@ -89,14 +106,17 @@ public class HabitManagerApp {
         menuProfile.addMenu(new CommandMenu("Редактировать профиль", new UpdateProfile(userService, authentication)));
         menuProfile.addMenu(new CommandMenu("Удалить профиль", new DeleteProfileCommand(authentication, userService)));
 
-        CompositeMenu menuHabit = new CompositeMenu("Меню привычек");
+        MenuComponent menuHabit = new CompositeMenu("Меню привычек");
         menuHabit.addMenu(new CommandMenu("Показать все привычки", new ShowAllMyHabitCommand(authentication, userService)));
         menuHabit.addMenu(new CommandMenu("Создать новую привычку", new AddHabitCommand(authentication, habitService)));
         menuHabit.addMenu(new CommandMenu("Редактировать привычку", new UpdateHabitCommand(authentication, habitService)));
         menuHabit.addMenu(new CommandMenu("Изменить статус привычки", new ChangeStatusHabitCommand(authentication, habitService)));
 
+        MenuComponent menuExit = new CommandMenu("Выйти из учетной записи", new LogOutCommand(authentication));
+
         mainMenu.addMenu(menuProfile);
         mainMenu.addMenu(menuHabit);
+        mainMenu.addMenu(menuExit);
         return mainMenu;
     }
 
